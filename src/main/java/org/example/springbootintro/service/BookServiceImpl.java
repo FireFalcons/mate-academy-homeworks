@@ -1,6 +1,5 @@
 package org.example.springbootintro.service;
 
-import jakarta.transaction.Transactional;
 import java.util.List;
 import org.example.springbootintro.model.Book;
 import org.example.springbootintro.repository.BookRepository;
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@Transactional
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
 

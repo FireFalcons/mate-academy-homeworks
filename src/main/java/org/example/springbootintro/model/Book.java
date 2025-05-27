@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import java.math.BigDecimal;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Entity
 @Data
@@ -18,20 +17,21 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
     @Column(nullable = false)
     private String title;
 
-    @NonNull
+    @Column(nullable = false)
     private String author;
 
-    @NonNull
+    @Column(nullable = false)
     private String isbn;
 
-    @NonNull
+    @Column(nullable = false)
     private BigDecimal price;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
+
     private String coverImage;
 
 }
