@@ -1,19 +1,16 @@
 package org.example.springbootintro.service;
 
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.example.springbootintro.model.Book;
 import org.example.springbootintro.repository.BookRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
-    private final BookRepository bookRepository;
 
-    @Autowired
-    public BookServiceImpl(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
+    private final BookRepository bookRepository;
 
     @Override
     public Book save(Book book) {

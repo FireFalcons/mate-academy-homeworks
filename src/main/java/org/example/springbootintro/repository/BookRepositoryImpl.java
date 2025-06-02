@@ -1,21 +1,18 @@
 package org.example.springbootintro.repository;
 
+import java.time.DateTimeException;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.example.springbootintro.model.Book;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@RequiredArgsConstructor
 public class BookRepositoryImpl implements BookRepository {
     private final SessionFactory sessionFactory;
-
-    @Autowired
-    public BookRepositoryImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 
     @Override
     public Book save(Book book) {
@@ -31,7 +28,7 @@ public class BookRepositoryImpl implements BookRepository {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can't insert into DB: " + book);
+            throw new DateTimeException("Can't insert book into DB: " + book);
         } finally {
             if (session != null) {
                 session.close();
@@ -44,7 +41,7 @@ public class BookRepositoryImpl implements BookRepository {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("SELECT b from Book b", Book.class).getResultList();
         } catch (Exception e) {
-            throw new RuntimeException("Failed to findAll Book object", e);
+            throw new DateTimeException("Failed to find all books", e);
         }
     }
 }
