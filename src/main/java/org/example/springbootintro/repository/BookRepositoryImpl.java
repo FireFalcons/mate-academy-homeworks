@@ -2,6 +2,7 @@ package org.example.springbootintro.repository;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.springbootintro.exception.DataProcessingException;
 import org.example.springbootintro.model.Book;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,8 +16,10 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Book save(Book book) {
+        Session session = null;
         Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
+        try {
+            session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.persist(book);
             transaction.commit();
@@ -25,7 +28,11 @@ public class BookRepositoryImpl implements BookRepository {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can't insert book to DB: " + book, e);
+            throw new DataProcessingException("Can't insert book to DB: " + book, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 
@@ -35,7 +42,7 @@ public class BookRepositoryImpl implements BookRepository {
             return session.createQuery("from Book", Book.class)
                         .getResultList();
         } catch (Exception e) {
-            throw new RuntimeException("Can't find all books from DB", e);
+            throw new DataProcessingException("Can't find all books from DB", e);
         }
     }
 }
