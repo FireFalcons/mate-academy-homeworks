@@ -1,6 +1,7 @@
 package org.example.springbootintro.repository;
 
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.example.springbootintro.exception.DataProcessingException;
 import org.example.springbootintro.model.Book;
@@ -43,6 +44,16 @@ public class BookRepositoryImpl implements BookRepository {
                         .getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Can't find all books from DB", e);
+        }
+    }
+
+    @Override
+    public Optional<Book> findById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            Book book = session.find(Book.class, id);
+            return Optional.ofNullable(book);
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't find book by id" + id, e);
         }
     }
 }
